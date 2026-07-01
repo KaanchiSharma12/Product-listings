@@ -165,4 +165,5 @@ body {
 
 .price-buttons button:hover {
   background: rgb(139, 212, 139);
+  color:rgb(32, 96, 32);
 }
