@@ -1,0 +1,47 @@
+function ProductCard(props) {
+
+  // 👇 NO useState HERE (IMPORTANT CHANGE)
+
+  return (
+    <div className="card">
+
+      <img
+        src={props.image}
+        alt={props.name}
+        className="card-image"
+      />
+
+      <div className="card-content">
+
+        <h2>{props.name}</h2>
+
+        <h3>Price : Rs {props.price}</h3>
+
+        <p>{props.desc}</p>
+
+        {/* GLOBAL TOTAL LOGIC */}
+        <h3 style={{ marginTop: "10px" }}>
+          Total Amount : Rs {props.price * props.count}
+        </h3>
+
+        <div className="counter">
+
+          <button onClick={props.decrease}>
+            -
+          </button>
+
+          <span>{props.count}</span>
+
+          <button onClick={props.increase}>
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default ProductCard;
