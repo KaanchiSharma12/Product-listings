@@ -11,6 +11,8 @@ function App() {
     productBrand: "",
   });
 
+  const [priceFilter, setPriceFilter] = useState("all");
+
   const handleSkincareInput = (e) => {
     setSkincareInput({
       ...skincareInput,
@@ -26,18 +28,48 @@ function App() {
     if (count > 0) setCount(count - 1);
   };
 
-  // FIXED FILTER LOGIC (brand issue corrected)
-  const filteredProducts = products.filter((item) => {
-    const matchName = item.productName
-      .toLowerCase()
-      .includes(skincareInput.productName.toLowerCase());
+  // PRICE FILTER LOGIC
+  const filterByPrice = (item) => {
+    if (priceFilter === "0-300") return item.productPrice <= 300;
 
-    const matchBrand = item.productDesc
-      .toLowerCase()
-      .includes(skincareInput.productBrand.toLowerCase());
+    if (priceFilter === "300-500")
+      return item.productPrice > 300 && item.productPrice <= 500;
 
-    return matchName && matchBrand;
-  });
+    if (priceFilter === "500+") return item.productPrice > 500;
+
+    return true;
+  };
+
+  const filteredProducts = products
+    .filter((item) => {
+      const matchName = item.productName
+        .toLowerCase()
+        .includes(skincareInput.productName.toLowerCase());
+
+      const matchBrand = item.productDesc
+        .toLowerCase()
+        .includes(skincareInput.productBrand.toLowerCase());
+
+      return matchName && matchBrand;
+    })
+    .filter(filterByPrice);
+
+  const handlePriceClick = (range) => {
+    setPriceFilter(range);
+
+    const result = products.filter((item) => {
+      if (range === "0-300") return item.productPrice <= 300;
+
+      if (range === "300-500")
+        return item.productPrice > 300 && item.productPrice <= 500;
+
+      if (range === "500+") return item.productPrice > 500;
+
+      return true;
+    });
+
+    console.log("Filtered Products:", result);
+  };
 
   return (
     <div className="app-container">
@@ -63,6 +95,20 @@ function App() {
             value={skincareInput.productBrand}
             onChange={handleSkincareInput}
           />
+        </div>
+
+        {/* PRICE FILTER BUTTONS */}
+        <div className="price-buttons">
+          <button onClick={() => handlePriceClick("all")}>All</button>
+          <button onClick={() => handlePriceClick("0-300")}>
+            ₹0 - ₹300
+          </button>
+          <button onClick={() => handlePriceClick("300-500")}>
+            ₹300 - ₹500
+          </button>
+          <button onClick={() => handlePriceClick("500+")}>
+            ₹500+
+          </button>
         </div>
       </div>
 
