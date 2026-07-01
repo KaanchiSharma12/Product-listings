@@ -1,3 +1,14 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  overflow-x:hidden;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
 .app{
   min-height:100vh;
   background:#f7f8fc;
@@ -11,10 +22,14 @@
   margin-bottom:30px;
 }
 
+/* ---------------- FILTER BUTTONS ---------------- */
+
 .buttons{
   display:flex;
   justify-content:center;
-  gap:20px;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
   margin-bottom:35px;
 }
 
@@ -37,6 +52,41 @@
   color:white;
 
 }
+
+/* ---------------- SEARCH BOX ---------------- */
+
+.search-box{
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:35px;
+  padding:18px;
+  background:#ececec;
+  border-radius:10px;
+
+}
+
+.search-box input{
+
+  width:250px;
+  padding:12px;
+  border:1px solid #bbb;
+  border-radius:6px;
+  font-size:15px;
+  outline:none;
+
+}
+
+.search-box input:focus{
+
+  border:1px solid #00aa58;
+
+}
+
+/* ---------------- PRODUCTS ---------------- */
 
 .product-container{
 
@@ -85,6 +135,7 @@
 
   margin:10px 0;
   color:#222;
+  font-size:32px;
 
 }
 
@@ -92,6 +143,7 @@
 
   color:#0f9d58;
   margin-bottom:10px;
+  font-size:22px;
 
 }
 
@@ -99,9 +151,11 @@
 
   color:#555;
   margin-bottom:20px;
+  font-size:16px;
 
 }
 
+/* ---------------- COUNTER ---------------- */
 
 .counter{
 
@@ -115,8 +169,8 @@
 
 .counter button{
 
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   border:none;
   border-radius:50%;
   background:#00aa58;
@@ -124,6 +178,7 @@
   font-size:24px;
   font-weight:bold;
   cursor:pointer;
+  transition:.3s;
 
 }
 
@@ -139,5 +194,185 @@
   font-weight:bold;
   min-width:40px;
   text-align:center;
+
+}
+
+/* ===========================
+          TABLET
+=========================== */
+
+@media (max-width:992px){
+
+.heading{
+
+  font-size:34px;
+
+}
+
+.card{
+
+  width:320px;
+
+}
+
+.card-content h2{
+
+  font-size:28px;
+
+}
+
+}
+
+/* ===========================
+          MOBILE
+=========================== */
+
+@media (max-width:768px){
+
+.app{
+
+  padding:20px;
+
+}
+
+.heading{
+
+  font-size:30px;
+
+}
+
+.buttons{
+
+  gap:10px;
+
+}
+
+.buttons button{
+
+  width:100%;
+
+}
+
+.search-box{
+
+  flex-direction:column;
+
+}
+
+.search-box input{
+
+  width:100%;
+
+}
+
+.product-container{
+
+  gap:20px;
+
+}
+
+.card{
+
+  width:100%;
+
+  max-width:360px;
+
+}
+
+.card-image{
+
+  height:230px;
+
+}
+
+.card-content{
+
+  padding:15px;
+
+}
+
+.card-content h2{
+
+  font-size:26px;
+
+}
+
+.card-content h3{
+
+  font-size:20px;
+
+}
+
+.counter{
+
+  gap:14px;
+
+}
+
+.counter button{
+
+  width:38px;
+  height:38px;
+  font-size:22px;
+
+}
+
+.counter span{
+
+  font-size:22px;
+
+}
+
+}
+
+/* ===========================
+       VERY SMALL PHONES
+=========================== */
+
+@media (max-width:480px){
+
+.heading{
+
+  font-size:25px;
+
+}
+
+.card-image{
+
+  height:200px;
+
+}
+
+.card-content h2{
+
+  font-size:22px;
+
+}
+
+.card-content h3{
+
+  font-size:18px;
+
+}
+
+.card-content p{
+
+  font-size:14px;
+
+}
+
+.counter button{
+
+  width:34px;
+  height:34px;
+  font-size:20px;
+
+}
+
+.counter span{
+
+  font-size:20px;
+
+}
 
 }

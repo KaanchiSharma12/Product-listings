@@ -72,7 +72,7 @@ function App() {
         <button onClick={price800}>Rs 500+</button>
       </div>
 
-      <div style={{ textAlign: "center", marginBottom: "30px", padding: "15px", background: "#eee", borderRadius: "10px" }}>
+      <div className="search-box">
         <h3 style={{ margin: "0 0 10px 0", fontSize: "18px", color: "#333" }}>Find Your Product</h3>
         <input
           type="text"
