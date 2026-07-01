@@ -1,6 +1,4 @@
 function ProductCard(props) {
-
-
   return (
     <div className="card">
 
@@ -14,28 +12,14 @@ function ProductCard(props) {
 
         <h2>{props.name}</h2>
 
-        <h3>Price : Rs {props.price}</h3>
+        <h3>Price : ₹ {props.price}</h3>
 
         <p>{props.desc}</p>
 
-        {/* GLOBAL TOTAL LOGIC */}
-        <h3 style={{ marginTop: "10px" }}>
-          Total Amount : Rs {props.price * props.count}
+        {/* TOTAL (GLOBAL COUNT APPLY) */}
+        <h3 className="total">
+          Total: ₹ {props.price * props.count}
         </h3>
-
-        <div className="counter">
-
-          <button onClick={props.decrease}>
-            -
-          </button>
-
-          <span>{props.count}</span>
-
-          <button onClick={props.increase}>
-            +
-          </button>
-
-        </div>
 
       </div>
 
