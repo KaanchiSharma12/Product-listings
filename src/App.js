@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 import ProductCard from "./components/ProductCard";
 import { products } from "./data/products";
 
