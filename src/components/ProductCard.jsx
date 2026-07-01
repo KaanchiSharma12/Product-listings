@@ -1,6 +1,5 @@
 function ProductCard(props) {
 
-  // 👇 NO useState HERE (IMPORTANT CHANGE)
 
   return (
     <div className="card">
