@@ -6,12 +6,14 @@ function ProductCard(props) {
       <div className="card-body">
         <h2>{props.name}</h2>
 
-        <h3 className="price">₹ {props.price}</h3>
+        <h3 className="price">
+          ₹ {props.price}
+        </h3>
 
         <p>{props.desc}</p>
 
         <h3 className="total">
-          Total: ₹ {props.price * props.count}
+          Total Amount : ₹ {props.price * props.count}
         </h3>
 
         <div className="counter">
