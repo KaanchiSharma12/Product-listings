@@ -1,31 +1,66 @@
-function ProductCard(props) {
+function ProductCard({
+  image,
+  name,
+  price,
+  desc,
+  count,
+  increase,
+  decrease,
+}) {
+
   return (
+
     <div className="card">
-      <img src={props.image} alt={props.name} />
+
+      <img
+        src={image}
+        alt={name}
+      />
 
       <div className="card-body">
-        <h2>{props.name}</h2>
+
+        <h2>
+          {name}
+        </h2>
 
         <h3 className="price">
-          ₹ {props.price}
+          ₹ {price}
         </h3>
 
-        <p>{props.desc}</p>
+        <p>
+          {desc}
+        </p>
 
         <h3 className="total">
-          Total Amount : ₹ {props.price * props.count}
+          Total Amount : ₹ {price * count}
         </h3>
 
         <div className="counter">
-          <button onClick={props.decrease}>-</button>
 
-          <span>{props.count}</span>
+          <button
+            onClick={decrease}
+          >
+            -
+          </button>
 
-          <button onClick={props.increase}>+</button>
+          <span>
+            {count}
+          </span>
+
+          <button
+            onClick={increase}
+          >
+            +
+          </button>
+
         </div>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default ProductCard;
