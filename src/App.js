@@ -2,369 +2,634 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import ProductCard from "./components/ProductCard";
 import { products } from "./data/products";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
 
-function App() {
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
-  // =========================
-  // LOCAL STORAGE (getItem)
-  // =========================
+import ApiProducts from "./components/ApiProducts";
+import Users from "./components/Users";
+import Posts from "./components/Posts";
+import Carts from "./components/Carts";
+
+
+function Home(){
 
   const [count, setCount] = useState(() => {
+
     const savedCount = localStorage.getItem("count");
+
     return savedCount ? Number(savedCount) : 0;
+
   });
 
-  const [skincareInput, setSkincareInput] = useState(() => {
+
+
+  const [skincareInput,setSkincareInput]=useState(()=>{
+
     const savedSearch = localStorage.getItem("search");
 
     return savedSearch
-      ? JSON.parse(savedSearch)
-      : {
-          productName: "",
-          productBrand: "",
-        };
+    ?
+    JSON.parse(savedSearch)
+    :
+    {
+      productName:"",
+      productBrand:""
+    };
+
   });
 
-  const [priceFilter, setPriceFilter] = useState(() => {
+
+
+  const [priceFilter,setPriceFilter]=useState(()=>{
+
     return localStorage.getItem("priceFilter") || "all";
+
   });
 
-  // =========================
-  // LOCAL STORAGE (setItem)
-  // =========================
 
-  useEffect(() => {
-    localStorage.setItem("count", count);
-  }, [count]);
 
-  useEffect(() => {
+  useEffect(()=>{
+
+    localStorage.setItem(
+      "count",
+      count
+    );
+
+  },[count]);
+
+
+
+
+  useEffect(()=>{
+
     localStorage.setItem(
       "search",
       JSON.stringify(skincareInput)
     );
-  }, [skincareInput]);
 
-  useEffect(() => {
+  },[skincareInput]);
+
+
+
+
+  useEffect(()=>{
+
     localStorage.setItem(
       "priceFilter",
       priceFilter
     );
-  }, [priceFilter]);
 
-  // =========================
-  // SEARCH INPUT
-  // =========================
+  },[priceFilter]);
 
-  const handleSkincareInput = (e) => {
+
+
+
+  const handleSkincareInput=(e)=>{
 
     setSkincareInput({
 
       ...skincareInput,
 
-      [e.target.name]: e.target.value,
+      [e.target.name]:e.target.value
 
     });
 
   };
 
-  // =========================
-  // COUNTER
-  // =========================
 
-  const increase = () => {
 
-    if (count < 10) {
 
-      setCount(count + 1);
+  const increase=()=>{
 
-    }
+    if(count<10){
 
-  };
-
-  const decrease = () => {
-
-    if (count > 0) {
-
-      setCount(count - 1);
+      setCount(count+1);
 
     }
 
   };
 
-  // =========================
-  // PRICE BUTTON
-  // =========================
 
-  const handlePriceClick = (range) => {
+
+  const decrease=()=>{
+
+    if(count>0){
+
+      setCount(count-1);
+
+    }
+
+  };
+
+
+
+
+  const handlePriceClick=(range)=>{
 
     setPriceFilter(range);
 
   };
 
-  // =========================
-  // PRICE FILTER
-  // =========================
 
-  const filterByPrice = (item) => {
 
-    switch (priceFilter) {
+
+  const filterByPrice=(item)=>{
+
+
+    switch(priceFilter){
+
 
       case "0-300":
-        return item.productPrice <= 300;
+
+        return item.productPrice<=300;
+
+
 
       case "300-500":
+
         return (
-          item.productPrice > 300 &&
-          item.productPrice <= 500
+          item.productPrice>300 &&
+          item.productPrice<=500
         );
 
+
+
       case "500+":
-        return item.productPrice > 500;
+
+        return item.productPrice>500;
+
+
 
       default:
+
         return true;
+
 
     }
 
+
   };
 
-  // =========================
-  // SEARCH FILTER
-  // =========================
+
+
 
   const filteredProducts = products
 
-    .filter((item) => {
+  .filter((item)=>{
 
-      const searchName = item.productName
 
-        .toLowerCase()
+    const searchName =
+    item.productName
+    .toLowerCase()
+    .includes(
+      skincareInput.productName.toLowerCase()
+    );
 
-        .includes(
 
-          skincareInput.productName.toLowerCase()
 
-        );
+    const searchDesc =
+    item.productDesc
+    .toLowerCase()
+    .includes(
+      skincareInput.productBrand.toLowerCase()
+    );
 
-      const searchDesc = item.productDesc
 
-        .toLowerCase()
 
-        .includes(
+    return searchName && searchDesc;
 
-          skincareInput.productBrand.toLowerCase()
 
-        );
+  })
 
-      return searchName && searchDesc;
 
-    })
+  .filter(filterByPrice);
 
-    .filter(filterByPrice);
 
-  // =========================
-  // removeItem()
-  // =========================
 
-  const resetSearch = () => {
+
+  const resetSearch=()=>{
+
 
     localStorage.removeItem("search");
 
+
     setSkincareInput({
 
-      productName: "",
+      productName:"",
 
-      productBrand: "",
+      productBrand:""
 
     });
 
-    alert("Search has been reset.");
 
   };
 
-  // =========================
-  // clear()
-  // =========================
 
-  const resetApp = () => {
+
+
+  const resetApp=()=>{
+
 
     localStorage.clear();
 
+
     setCount(0);
+
 
     setPriceFilter("all");
 
+
     setSkincareInput({
 
-      productName: "",
+      productName:"",
 
-      productBrand: "",
+      productBrand:""
 
     });
 
-    alert("Application has been reset.");
 
   };
 
-  return (
 
-    <div className="app-container">
 
-      <h1 className="title">
 
-        Skincare Product Listing
+return(
 
-      </h1>
+<div className="app-container">
 
-      <div className="search-box">
 
-        <h2>
+<h1 className="title">
 
-          Find Your Product
+Skincare Product Listing
 
-        </h2>
+</h1>
 
-        <div className="inputs">
 
-          <input
 
-            type="text"
+<div className="search-box">
 
-            name="productName"
 
-            placeholder="Product Name"
+<h2>
+Find Your Product
+</h2>
 
-            value={skincareInput.productName}
 
-            onChange={handleSkincareInput}
 
-          />
+<div className="inputs">
 
-          <input
 
-            type="text"
+<input
 
-            name="productBrand"
+type="text"
 
-            placeholder="Brand / Keyword"
+name="productName"
 
-            value={skincareInput.productBrand}
+placeholder="Product Name"
 
-            onChange={handleSkincareInput}
+value={skincareInput.productName}
 
-          />
+onChange={handleSkincareInput}
 
-        </div>
+/>
 
-        {/* PRICE BUTTONS */}
 
-        <div className="price-buttons">
 
+<input
 
-          <button
+type="text"
 
-            className={priceFilter === "0-300" ? "active-btn" : ""}
+name="productBrand"
 
-            onClick={() => handlePriceClick("0-300")}
+placeholder="Brand / Keyword"
 
-          >
+value={skincareInput.productBrand}
 
-            ₹0 - ₹300
+onChange={handleSkincareInput}
 
-          </button>
+/>
 
-          <button
 
-            className={priceFilter === "300-500" ? "active-btn" : ""}
+</div>
+<div className="price-buttons">
 
-            onClick={() => handlePriceClick("300-500")}
 
-          >
+<button
 
-            ₹300 - ₹500
+className={
+priceFilter==="0-300"
+?
+"active-btn"
+:
+""
+}
 
-          </button>
+onClick={()=>handlePriceClick("0-300")}
 
-          <button
+>
 
-            className={priceFilter === "500+" ? "active-btn" : ""}
+₹0 - ₹300
 
-            onClick={() => handlePriceClick("500+")}
+</button>
 
-          >
 
-            ₹500+
 
-          </button>
+<button
 
-        </div>
+className={
+priceFilter==="300-500"
+?
+"active-btn"
+:
+""
+}
 
-        {/* LOCAL STORAGE */}
+onClick={()=>handlePriceClick("300-500")}
 
-        <div className="storage-buttons">
+>
 
-          <button
+₹300 - ₹500
 
-            onClick={resetSearch}
+</button>
 
-          >
 
-            Reset Search
 
-          </button>
+<button
 
-          <button
+className={
+priceFilter==="500+"
+?
+"active-btn"
+:
+""
+}
 
-            onClick={resetApp}
+onClick={()=>handlePriceClick("500+")}
 
-          >
+>
 
-            Reset App
+₹500+
 
-          </button>
+</button>
 
-        </div>
 
-      </div>
 
-      {/* PRODUCTS */}
+</div>
 
-      <div className="product-grid">
 
-        {
 
-          filteredProducts.map((item) => (
 
-            <ProductCard
+<div className="storage-buttons">
 
-              key={item.id}
 
-              image={item.productImage}
+<button onClick={resetSearch}>
 
-              name={item.productName}
+Reset Search
 
-              price={item.productPrice}
+</button>
 
-              desc={item.productDesc}
 
-              count={count}
 
-              increase={increase}
+<button onClick={resetApp}>
 
-              decrease={decrease}
+Reset App
 
-            />
+</button>
 
-          ))
 
-        }
 
-      </div>
+</div>
 
-    </div>
 
-  );
+
+</div>
+
+
+
+
+<div className="product-grid">
+
+
+{
+
+filteredProducts.map((item)=>(
+
+
+<ProductCard
+
+
+key={item.id}
+
+
+image={item.productImage}
+
+
+name={item.productName}
+
+
+price={item.productPrice}
+
+
+desc={item.productDesc}
+
+
+count={count}
+
+
+increase={increase}
+
+
+decrease={decrease}
+
+
+
+/>
+
+
+))
+
 
 }
+
+
+</div>
+
+
+
+
+</div>
+
+
+);
+
+
+}
+
+
+
+
+
+function App(){
+
+
+return(
+
+
+<BrowserRouter>
+
+
+{/* NAVBAR */}
+
+<nav className="navbar">
+
+
+<Link to="/">
+
+Home
+
+</Link>
+
+
+
+<Link to="/products">
+
+Products API
+
+</Link>
+
+
+
+<Link to="/users">
+
+Users
+
+</Link>
+
+
+
+<Link to="/posts">
+
+Posts
+
+</Link>
+
+
+
+<Link to="/carts">
+
+Carts
+
+</Link>
+
+
+<Link to="/signup">
+
+Signup
+
+</Link>
+
+
+<Link to="/login">
+
+Login
+
+</Link>
+
+
+
+</nav>
+
+
+
+
+
+<Routes>
+
+
+<Route
+
+path="/"
+
+element={<Home/>}
+
+/>
+
+
+
+<Route
+
+path="/products"
+
+element={<ApiProducts/>}
+
+/>
+
+
+
+<Route
+
+path="/users"
+
+element={<Users/>}
+
+/>
+
+
+
+<Route
+
+path="/posts"
+
+element={<Posts/>}
+
+/>
+
+
+
+<Route
+
+path="/carts"
+
+element={<Carts/>}
+
+/>
+
+<Route
+
+path="/signup"
+
+element={<Signup/>}
+
+/>
+
+<Route
+
+path="/login"
+
+element={<Login/>}
+
+/>
+
+
+
+</Routes>
+
+
+
+</BrowserRouter>
+
+
+);
+
+
+}
+
+
 
 export default App;
