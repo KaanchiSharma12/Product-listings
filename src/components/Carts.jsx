@@ -267,15 +267,6 @@ Remove
 
 <div className="cart-total">
 
-
-<h4>
-
-Subtotal : ₹ {totalAmount}
-
-</h4>
-
-<br></br>
-
 <h3>
 
 Shipping : Free
