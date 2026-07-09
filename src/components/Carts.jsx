@@ -1,83 +1,261 @@
-import {useEffect,useState} from "react";
+import { useState } from "react";
+import { products } from "../data/products";
 
 
 function Carts(){
 
 
-const [carts,setCarts]=useState([]);
+const [cart,setCart]=useState(products.slice(0,8).map((item)=>({
+
+...item,
+
+quantity:1
+
+})));
 
 
 
-useEffect(()=>{
+const increase=(id)=>{
 
 
-const fetchCarts=async()=>{
+setCart(
 
+cart.map((item)=>
 
-const response=await fetch(
-"https://dummyjson.com/carts"
+item.id===id
+
+?
+
+{
+
+...item,
+
+quantity:item.quantity+1
+
+}
+
+:
+
+item
+
+)
+
 );
-
-
-const data=await response.json();
-
-
-setCarts(data.carts);
 
 
 };
 
 
-fetchCarts();
 
 
-},[]);
+const decrease=(id)=>{
+
+
+setCart(
+
+cart.map((item)=>
+
+item.id===id && item.quantity>1
+
+?
+
+{
+
+...item,
+
+quantity:item.quantity-1
+
+}
+
+:
+
+item
+
+)
+
+);
+
+
+};
+
+
+
+
+const removeItem=(id)=>{
+
+
+setCart(
+
+cart.filter(
+
+(item)=>item.id!==id
+
+)
+
+);
+
+
+};
+
+
+
+
+const totalAmount = cart.reduce(
+
+(sum,item)=>
+
+sum + (item.productPrice * item.quantity),
+
+0
+
+);
+
 
 
 
 return(
 
-<div>
+
+<div className="cart-container">
 
 
 <h1 className="title">
-Carts
+
+My Cart
+
 </h1>
 
 
-<div className="product-grid">
 
 
 {
 
-carts.map((cart)=>(
+cart.length===0 ?
 
 
-<div className="card" key={cart.id}>
+<h2 className="empty-cart">
+
+Your Cart is Empty
+
+</h2>
 
 
-<div className="card-body">
+:
+
+
+<div className="cart-items">
+
+
+{
+
+cart.map((item)=>(
+
+
+<div className="cart-card" key={item.id}>
+
+
+<img
+
+src={item.productImage}
+
+alt={item.productName}
+
+/>
+
+
+
+<div className="cart-details">
 
 
 <h2>
-Cart ID : {cart.id}
+
+{item.productName}
+
 </h2>
 
 
 <p>
-Total Products : {cart.totalProducts}
+
+{item.productDesc}
+
 </p>
 
 
-<p>
-Total Amount : ₹ {cart.total}
-</p>
+<h3 className="price">
+
+₹ {item.productPrice}
+
+</h3>
+
+
+
+<div className="counter">
+
+
+<button
+
+onClick={()=>decrease(item.id)}
+
+>
+
+-
+
+</button>
+
+
+
+<span>
+
+{item.quantity}
+
+</span>
+
+
+
+<button
+
+onClick={()=>increase(item.id)}
+
+>
+
++
+
+</button>
 
 
 </div>
 
 
+
+<h3>
+
+Total :
+₹ {item.productPrice*item.quantity}
+
+</h3>
+
+
+
+<button
+
+className="remove-btn"
+
+onClick={()=>removeItem(item.id)}
+
+>
+
+Remove
+
+</button>
+
+
+
 </div>
+
+
+
+</div>
+
 
 
 ))
@@ -86,13 +264,55 @@ Total Amount : ₹ {cart.total}
 }
 
 
-</div>
+
+<div className="cart-total">
+
+
+<h4>
+
+Subtotal : ₹ {totalAmount}
+
+</h4>
+
+<br></br>
+
+<h3>
+
+Shipping : Free
+
+</h3>
+
+<br></br>
+
+<h4>
+
+Total : ₹ {totalAmount}
+
+</h4>
+
+
+<button className="checkout-btn">
+
+Proceed To Checkout
+
+</button>
 
 
 </div>
 
 
-);
+
+</div>
+
+
+}
+
+
+
+</div>
+
+
+)
 
 
 }
