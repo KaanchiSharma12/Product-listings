@@ -16,6 +16,7 @@ import ApiProducts from "./components/ApiProducts";
 import Users from "./components/Users";
 import Posts from "./components/Posts";
 import Carts from "./components/Carts";
+import ProductDetails from "./components/ProductDetails";
 
 
 function Home(){
@@ -420,34 +421,17 @@ Reset App
 
 filteredProducts.map((item)=>(
 
-
 <ProductCard
-
 
 key={item.id}
 
-
-image={item.productImage}
-
-
-name={item.productName}
-
-
-price={item.productPrice}
-
-
-desc={item.productDesc}
-
+product={item}
 
 count={count}
 
-
 increase={increase}
 
-
 decrease={decrease}
-
-
 
 />
 
@@ -502,8 +486,7 @@ Home
 Products API
 
 </Link>
-
-
+ 
 
 <Link to="/users">
 
@@ -610,9 +593,9 @@ element={<Signup/>}
 
 <Route
 
-path="/login"
+path="/product"
 
-element={<Login/>}
+element={<ProductDetails/>}
 
 />
 
