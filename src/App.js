@@ -3,7 +3,6 @@ import "./App.css";
 import ProductCard from "./components/ProductCard";
 import { products } from "./data/products";
 import Signup from "./components/Signup";
-import Login from "./components/Login";
 
 import {
   BrowserRouter,
@@ -19,7 +18,7 @@ import Carts from "./components/Carts";
 import ProductDetails from "./components/ProductDetails";
 
 
-function Home(){
+function Home() {
 
   const [count, setCount] = useState(() => {
 
@@ -31,24 +30,24 @@ function Home(){
 
 
 
-  const [skincareInput,setSkincareInput]=useState(()=>{
+  const [skincareInput, setSkincareInput] = useState(() => {
 
     const savedSearch = localStorage.getItem("search");
 
     return savedSearch
-    ?
-    JSON.parse(savedSearch)
-    :
-    {
-      productName:"",
-      productBrand:""
-    };
+      ?
+      JSON.parse(savedSearch)
+      :
+      {
+        productName: "",
+        productBrand: ""
+      };
 
   });
 
 
 
-  const [priceFilter,setPriceFilter]=useState(()=>{
+  const [priceFilter, setPriceFilter] = useState(() => {
 
     return localStorage.getItem("priceFilter") || "all";
 
@@ -56,49 +55,49 @@ function Home(){
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     localStorage.setItem(
       "count",
       count
     );
 
-  },[count]);
+  }, [count]);
 
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     localStorage.setItem(
       "search",
       JSON.stringify(skincareInput)
     );
 
-  },[skincareInput]);
+  }, [skincareInput]);
 
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     localStorage.setItem(
       "priceFilter",
       priceFilter
     );
 
-  },[priceFilter]);
+  }, [priceFilter]);
 
 
 
 
-  const handleSkincareInput=(e)=>{
+  const handleSkincareInput = (e) => {
 
     setSkincareInput({
 
       ...skincareInput,
 
-      [e.target.name]:e.target.value
+      [e.target.name]: e.target.value
 
     });
 
@@ -107,23 +106,11 @@ function Home(){
 
 
 
-  const increase=()=>{
+  const increase = () => {
 
-    if(count<10){
+    if (count < 10) {
 
-      setCount(count+1);
-
-    }
-
-  };
-
-
-
-  const decrease=()=>{
-
-    if(count>0){
-
-      setCount(count-1);
+      setCount(count + 1);
 
     }
 
@@ -131,8 +118,20 @@ function Home(){
 
 
 
+  const decrease = () => {
 
-  const handlePriceClick=(range)=>{
+    if (count > 0) {
+
+      setCount(count - 1);
+
+    }
+
+  };
+
+
+
+
+  const handlePriceClick = (range) => {
 
     setPriceFilter(range);
 
@@ -141,30 +140,30 @@ function Home(){
 
 
 
-  const filterByPrice=(item)=>{
+  const filterByPrice = (item) => {
 
 
-    switch(priceFilter){
+    switch (priceFilter) {
 
 
       case "0-300":
 
-        return item.productPrice<=300;
+        return item.productPrice <= 300;
 
 
 
       case "300-500":
 
         return (
-          item.productPrice>300 &&
-          item.productPrice<=500
+          item.productPrice > 300 &&
+          item.productPrice <= 500
         );
 
 
 
       case "500+":
 
-        return item.productPrice>500;
+        return item.productPrice > 500;
 
 
 
@@ -183,39 +182,39 @@ function Home(){
 
   const filteredProducts = products
 
-  .filter((item)=>{
+    .filter((item) => {
 
 
-    const searchName =
-    item.productName
-    .toLowerCase()
-    .includes(
-      skincareInput.productName.toLowerCase()
-    );
-
-
-
-    const searchDesc =
-    item.productDesc
-    .toLowerCase()
-    .includes(
-      skincareInput.productBrand.toLowerCase()
-    );
+      const searchName =
+        item.productName
+          .toLowerCase()
+          .includes(
+            skincareInput.productName.toLowerCase()
+          );
 
 
 
-    return searchName && searchDesc;
-
-
-  })
-
-
-  .filter(filterByPrice);
-
+      const searchDesc =
+        item.productDesc
+          .toLowerCase()
+          .includes(
+            skincareInput.productBrand.toLowerCase()
+          );
 
 
 
-  const resetSearch=()=>{
+      return searchName && searchDesc;
+
+
+    })
+
+
+    .filter(filterByPrice);
+
+
+
+
+  const resetSearch = () => {
 
 
     localStorage.removeItem("search");
@@ -223,9 +222,9 @@ function Home(){
 
     setSkincareInput({
 
-      productName:"",
+      productName: "",
 
-      productBrand:""
+      productBrand: ""
 
     });
 
@@ -235,7 +234,7 @@ function Home(){
 
 
 
-  const resetApp=()=>{
+  const resetApp = () => {
 
 
     localStorage.clear();
@@ -249,9 +248,9 @@ function Home(){
 
     setSkincareInput({
 
-      productName:"",
+      productName: "",
 
-      productBrand:""
+      productBrand: ""
 
     });
 
@@ -261,354 +260,354 @@ function Home(){
 
 
 
-return(
+  return (
 
-<div className="app-container">
-
-
-<h1 className="title">
-
-Skincare Product Listing
-
-</h1>
+    <div className="app-container">
 
 
+      <h1 className="title">
 
-<div className="search-box">
+        Skincare Product Listing
 
-
-<h2>
-Find Your Product
-</h2>
+      </h1>
 
 
 
-<div className="inputs">
+      <div className="search-box">
 
 
-<input
-
-type="text"
-
-name="productName"
-
-placeholder="Product Name"
-
-value={skincareInput.productName}
-
-onChange={handleSkincareInput}
-
-/>
+        <h2>
+          Find Your Product
+        </h2>
 
 
 
-<input
-
-type="text"
-
-name="productBrand"
-
-placeholder="Brand / Keyword"
-
-value={skincareInput.productBrand}
-
-onChange={handleSkincareInput}
-
-/>
+        <div className="inputs">
 
 
-</div>
-<div className="price-buttons">
+          <input
+
+            type="text"
+
+            name="productName"
+
+            placeholder="Product Name"
+
+            value={skincareInput.productName}
+
+            onChange={handleSkincareInput}
+
+          />
 
 
-<button
 
-className={
-priceFilter==="0-300"
-?
-"active-btn"
-:
-""
+          <input
+
+            type="text"
+
+            name="productBrand"
+
+            placeholder="Brand / Keyword"
+
+            value={skincareInput.productBrand}
+
+            onChange={handleSkincareInput}
+
+          />
+
+
+        </div>
+        <div className="price-buttons">
+
+
+          <button
+
+            className={
+              priceFilter === "0-300"
+                ?
+                "active-btn"
+                :
+                ""
+            }
+
+            onClick={() => handlePriceClick("0-300")}
+
+          >
+
+            ₹0 - ₹300
+
+          </button>
+
+
+
+          <button
+
+            className={
+              priceFilter === "300-500"
+                ?
+                "active-btn"
+                :
+                ""
+            }
+
+            onClick={() => handlePriceClick("300-500")}
+
+          >
+
+            ₹300 - ₹500
+
+          </button>
+
+
+
+          <button
+
+            className={
+              priceFilter === "500+"
+                ?
+                "active-btn"
+                :
+                ""
+            }
+
+            onClick={() => handlePriceClick("500+")}
+
+          >
+
+            ₹500+
+
+          </button>
+
+
+
+        </div>
+
+
+
+
+        <div className="storage-buttons">
+
+
+          <button onClick={resetSearch}>
+
+            Reset Search
+
+          </button>
+
+
+
+          <button onClick={resetApp}>
+
+            Reset App
+
+          </button>
+
+
+
+        </div>
+
+
+
+      </div>
+
+
+
+
+      <div className="product-grid">
+
+
+        {
+
+          filteredProducts.map((item) => (
+
+            <ProductCard
+
+              key={item.id}
+
+              product={item}
+
+              count={count}
+
+              increase={increase}
+
+              decrease={decrease}
+
+            />
+
+
+          ))
+
+
+        }
+
+
+      </div>
+
+
+
+
+    </div>
+
+
+  );
+
+
 }
 
-onClick={()=>handlePriceClick("0-300")}
 
->
 
-₹0 - ₹300
 
-</button>
 
+function App() {
 
 
-<button
+  return (
 
-className={
-priceFilter==="300-500"
-?
-"active-btn"
-:
-""
-}
 
-onClick={()=>handlePriceClick("300-500")}
+    <BrowserRouter>
 
->
 
-₹300 - ₹500
+      {/* NAVBAR */}
 
-</button>
+      <nav className="navbar">
 
 
+        <Link to="/">
 
-<button
+          Home
 
-className={
-priceFilter==="500+"
-?
-"active-btn"
-:
-""
-}
+        </Link>
 
-onClick={()=>handlePriceClick("500+")}
 
->
 
-₹500+
+        <Link to="/products">
 
-</button>
+          Products API
 
+        </Link>
 
 
-</div>
+        <Link to="/users">
 
+          Users
 
+        </Link>
 
 
-<div className="storage-buttons">
 
+        <Link to="/posts">
 
-<button onClick={resetSearch}>
+          Posts
 
-Reset Search
+        </Link>
 
-</button>
 
 
+        <Link to="/carts">
 
-<button onClick={resetApp}>
+          Carts
 
-Reset App
+        </Link>
 
-</button>
 
+        <Link to="/signup">
 
+          Signup
 
-</div>
+        </Link>
 
 
+        <Link to="/login">
 
-</div>
+          Login
 
+        </Link>
 
 
 
-<div className="product-grid">
+      </nav>
 
 
-{
 
-filteredProducts.map((item)=>(
 
-<ProductCard
 
-key={item.id}
+      <Routes>
 
-product={item}
 
-count={count}
+        <Route
 
-increase={increase}
+          path="/"
 
-decrease={decrease}
+          element={<Home />}
 
-/>
+        />
 
 
-))
 
+        <Route
 
-}
+          path="/products"
 
+          element={<ApiProducts />}
 
-</div>
+        />
 
 
 
+        <Route
 
-</div>
+          path="/users"
 
+          element={<Users />}
 
-);
+        />
 
 
-}
 
+        <Route
 
+          path="/posts"
 
+          element={<Posts />}
 
+        />
 
-function App(){
 
 
-return(
+        <Route
 
+          path="/carts"
 
-<BrowserRouter>
+          element={<Carts />}
 
+        />
 
-{/* NAVBAR */}
+        <Route
 
-<nav className="navbar">
+          path="/signup"
 
+          element={<Signup />}
 
-<Link to="/">
+        />
 
-Home
+        <Route
 
-</Link>
+          path="/product"
 
+          element={<ProductDetails />}
 
+        />
 
-<Link to="/products">
 
-Products API
 
-</Link>
- 
+      </Routes>
 
-<Link to="/users">
 
-Users
 
-</Link>
+    </BrowserRouter>
 
 
-
-<Link to="/posts">
-
-Posts
-
-</Link>
-
-
-
-<Link to="/carts">
-
-Carts
-
-</Link>
-
-
-<Link to="/signup">
-
-Signup
-
-</Link>
-
-
-<Link to="/login">
-
-Login
-
-</Link>
-
-
-
-</nav>
-
-
-
-
-
-<Routes>
-
-
-<Route
-
-path="/"
-
-element={<Home/>}
-
-/>
-
-
-
-<Route
-
-path="/products"
-
-element={<ApiProducts/>}
-
-/>
-
-
-
-<Route
-
-path="/users"
-
-element={<Users/>}
-
-/>
-
-
-
-<Route
-
-path="/posts"
-
-element={<Posts/>}
-
-/>
-
-
-
-<Route
-
-path="/carts"
-
-element={<Carts/>}
-
-/>
-
-<Route
-
-path="/signup"
-
-element={<Signup/>}
-
-/>
-
-<Route
-
-path="/product"
-
-element={<ProductDetails/>}
-
-/>
-
-
-
-</Routes>
-
-
-
-</BrowserRouter>
-
-
-);
+  );
 
 
 }
