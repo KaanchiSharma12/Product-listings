@@ -8,7 +8,8 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link
+  Link,
+  useSearchParams
 } from "react-router-dom";
 
 import ApiProducts from "./components/ApiProducts";
@@ -20,6 +21,7 @@ import ProductDetails from "./components/ProductDetails";
 
 function Home() {
 
+  const [searchParams, setSearchParams] = useSearchParams(); 
   const [count, setCount] = useState(() => {
 
     const savedCount = localStorage.getItem("count");
@@ -30,28 +32,21 @@ function Home() {
 
 
 
-  const [skincareInput, setSkincareInput] = useState(() => {
+  const [skincareInput, setSkincareInput] = useState({
 
-    const savedSearch = localStorage.getItem("search");
+    productName: searchParams.get("name") || "",
 
-    return savedSearch
-      ?
-      JSON.parse(savedSearch)
-      :
-      {
-        productName: "",
-        productBrand: ""
-      };
+    productBrand: searchParams.get("brand") || ""
 
   });
 
 
 
-  const [priceFilter, setPriceFilter] = useState(() => {
+  const [priceFilter, setPriceFilter] = useState(
 
-    return localStorage.getItem("priceFilter") || "all";
+    searchParams.get("price") || "all"
 
-  });
+  );
 
 
 
@@ -93,11 +88,23 @@ function Home() {
 
   const handleSkincareInput = (e) => {
 
-    setSkincareInput({
+    const updated = {
 
       ...skincareInput,
 
       [e.target.name]: e.target.value
+
+    };
+
+    setSkincareInput(updated);
+
+    setSearchParams({
+
+      name: updated.productName,
+
+      brand: updated.productBrand,
+
+      price: priceFilter
 
     });
 
@@ -134,6 +141,16 @@ function Home() {
   const handlePriceClick = (range) => {
 
     setPriceFilter(range);
+
+    setSearchParams({
+
+      name: skincareInput.productName,
+
+      brand: skincareInput.productBrand,
+
+      price: range
+
+    });
 
   };
 
@@ -216,10 +233,6 @@ function Home() {
 
   const resetSearch = () => {
 
-
-    localStorage.removeItem("search");
-
-
     setSkincareInput({
 
       productName: "",
@@ -228,6 +241,11 @@ function Home() {
 
     });
 
+    setSearchParams({
+
+      price: priceFilter
+
+    });
 
   };
 
@@ -236,15 +254,9 @@ function Home() {
 
   const resetApp = () => {
 
-
-    localStorage.clear();
-
-
     setCount(0);
 
-
     setPriceFilter("all");
-
 
     setSkincareInput({
 
@@ -254,7 +266,7 @@ function Home() {
 
     });
 
-
+    setSearchParams({});
   };
 
 
@@ -590,13 +602,10 @@ function App() {
 
         />
 
-        <Route
-
-          path="/product"
-
-          element={<ProductDetails />}
-
-        />
+<Route
+  path="/product/:id"
+  element={<ProductDetails />}
+/>
 
 
 

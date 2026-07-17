@@ -14,15 +14,11 @@ function ProductCard({
 
   const navigate = useNavigate();
 
-  const openProduct = () => {
+const openProduct = () => {
 
-    navigate("/product", {
+navigate(`/product/${product.id}`);
 
-      state: product,
-
-    });
-
-  };
+};
 
   return (
 

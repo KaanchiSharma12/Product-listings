@@ -1,11 +1,15 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { products } from "../data/products";
 
 function ProductDetails() {
 
-  const location = useLocation();
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const product = location.state;
+  const product = products.find(
+    (item) => item.id === Number(id)
+  );
 
   if (!product) {
     return (
@@ -41,9 +45,7 @@ function ProductDetails() {
           <li>Daily Use Product</li>
         </ul>
 
-        <button
-          onClick={() => navigate(-1)}
-        >
+        <button onClick={() => navigate(-1)}>
           Back
         </button>
 

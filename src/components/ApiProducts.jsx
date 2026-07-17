@@ -18,7 +18,7 @@ function ApiProducts() {
         );
 
         const data = await response.json();
-
+ 
         setApiProducts(data.products);
 
       }
