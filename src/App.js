@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import ProductCard from "./components/ProductCard";
-import { products } from "./data/products";
+import { getProducts } from "./services/api";
 import Signup from "./components/Signup";
 
 import {
@@ -21,7 +21,13 @@ import ProductDetails from "./components/ProductDetails";
 
 function Home() {
 
-  const [searchParams, setSearchParams] = useSearchParams(); 
+
+  const [products, setProducts] = useState([]);
+
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+
   const [count, setCount] = useState(() => {
 
     const savedCount = localStorage.getItem("count");
@@ -47,6 +53,34 @@ function Home() {
     searchParams.get("price") || "all"
 
   );
+
+
+
+  // Drupal API Fetching
+
+  useEffect(() => {
+
+
+    async function fetchProducts() {
+
+
+      const data = await getProducts();
+
+
+      console.log("Drupal Products:", data);
+
+
+      setProducts(data);
+
+
+    }
+
+
+    fetchProducts();
+
+
+  }, []);
+
 
 
 
@@ -88,6 +122,7 @@ function Home() {
 
   const handleSkincareInput = (e) => {
 
+
     const updated = {
 
       ...skincareInput,
@@ -96,7 +131,10 @@ function Home() {
 
     };
 
+
     setSkincareInput(updated);
+
+
 
     setSearchParams({
 
@@ -108,6 +146,7 @@ function Home() {
 
     });
 
+
   };
 
 
@@ -115,23 +154,28 @@ function Home() {
 
   const increase = () => {
 
+
     if (count < 10) {
 
       setCount(count + 1);
 
     }
 
+
   };
 
 
 
+
   const decrease = () => {
+
 
     if (count > 0) {
 
       setCount(count - 1);
 
     }
+
 
   };
 
@@ -140,7 +184,10 @@ function Home() {
 
   const handlePriceClick = (range) => {
 
+
     setPriceFilter(range);
+
+
 
     setSearchParams({
 
@@ -152,6 +199,7 @@ function Home() {
 
     });
 
+
   };
 
 
@@ -160,27 +208,29 @@ function Home() {
   const filterByPrice = (item) => {
 
 
+    const price = Number(
+      item.attributes?.field_price || 0
+    );
+
+
     switch (priceFilter) {
 
 
       case "0-300":
 
-        return item.productPrice <= 300;
+        return price <= 300;
 
 
 
       case "300-500":
 
-        return (
-          item.productPrice > 300 &&
-          item.productPrice <= 500
-        );
+        return price > 300 && price <= 500;
 
 
 
       case "500+":
 
-        return item.productPrice > 500;
+        return price > 500;
 
 
 
@@ -203,19 +253,29 @@ function Home() {
 
 
       const searchName =
-        item.productName
+
+        (item.attributes?.title || "")
+
           .toLowerCase()
+
           .includes(
+
             skincareInput.productName.toLowerCase()
+
           );
 
 
 
       const searchDesc =
-        item.productDesc
+
+        (item.attributes?.field_description || "")
+
           .toLowerCase()
+
           .includes(
+
             skincareInput.productBrand.toLowerCase()
+
           );
 
 
@@ -225,13 +285,9 @@ function Home() {
 
     })
 
-
     .filter(filterByPrice);
+      const resetSearch = () => {
 
-
-
-
-  const resetSearch = () => {
 
     setSkincareInput({
 
@@ -241,11 +297,13 @@ function Home() {
 
     });
 
+
     setSearchParams({
 
       price: priceFilter
 
     });
+
 
   };
 
@@ -254,9 +312,12 @@ function Home() {
 
   const resetApp = () => {
 
+
     setCount(0);
 
+
     setPriceFilter("all");
+
 
     setSkincareInput({
 
@@ -266,7 +327,10 @@ function Home() {
 
     });
 
+
     setSearchParams({});
+
+
   };
 
 
@@ -285,12 +349,14 @@ function Home() {
 
 
 
+
       <div className="search-box">
 
 
         <h2>
           Find Your Product
         </h2>
+
 
 
 
@@ -329,6 +395,11 @@ function Home() {
 
 
         </div>
+
+
+
+
+
         <div className="price-buttons">
 
 
@@ -352,6 +423,8 @@ function Home() {
 
 
 
+
+
           <button
 
             className={
@@ -369,6 +442,8 @@ function Home() {
             ₹300 - ₹500
 
           </button>
+
+
 
 
 
@@ -391,8 +466,8 @@ function Home() {
           </button>
 
 
-
         </div>
+
 
 
 
@@ -408,6 +483,7 @@ function Home() {
 
 
 
+
           <button onClick={resetApp}>
 
             Reset App
@@ -415,12 +491,11 @@ function Home() {
           </button>
 
 
-
         </div>
 
 
-
       </div>
+
 
 
 
@@ -429,8 +504,8 @@ function Home() {
 
 
         {
-
           filteredProducts.map((item) => (
+
 
             <ProductCard
 
@@ -448,18 +523,13 @@ function Home() {
 
 
           ))
-
-
         }
 
 
       </div>
 
 
-
-
     </div>
-
 
   );
 
@@ -479,65 +549,58 @@ function App() {
     <BrowserRouter>
 
 
-      {/* NAVBAR */}
-
       <nav className="navbar">
 
 
         <Link to="/">
-
           Home
-
         </Link>
+
 
 
 
         <Link to="/products">
-
           Products API
-
         </Link>
+
+
 
 
         <Link to="/users">
-
           Users
-
         </Link>
+
 
 
 
         <Link to="/posts">
-
           Posts
-
         </Link>
+
 
 
 
         <Link to="/carts">
-
           Carts
-
         </Link>
+
+
 
 
         <Link to="/signup">
-
           Signup
-
         </Link>
+
+
 
 
         <Link to="/login">
-
           Login
-
         </Link>
 
 
-
       </nav>
+
 
 
 
@@ -594,6 +657,8 @@ function App() {
 
         />
 
+
+
         <Route
 
           path="/signup"
@@ -602,15 +667,18 @@ function App() {
 
         />
 
-<Route
-  path="/product/:id"
-  element={<ProductDetails />}
-/>
 
+
+        <Route
+
+          path="/product/:id"
+
+          element={<ProductDetails />}
+
+        />
 
 
       </Routes>
-
 
 
     </BrowserRouter>

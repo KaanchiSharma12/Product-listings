@@ -170,3 +170,16 @@ export const products = [
     }
 
 ];
+
+export async function getProducts() {
+
+    const response = await fetch("http://localhost:8888/jsonapi/node/page");
+
+    console.log("API Response:", response);
+
+    const data = await response.json();
+
+    console.log("Products Data:", data);
+
+    return data;
+}
